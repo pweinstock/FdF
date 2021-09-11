@@ -6,7 +6,7 @@
 /*   By: pweinsto <pweinsto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 09:13:37 by pweinsto          #+#    #+#             */
-/*   Updated: 2021/09/03 19:31:02 by pweinsto         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:56:24 by pweinsto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_print_array(int *array, int len)
 	printf("\n");
 }
 
-void	ft_print_matrix(int ****matrix)
+/*void	ft_print_matrix(int ****matrix)
 {
 	int	i;
 	int	j;
@@ -78,7 +78,7 @@ void	ft_print_matrix(int ****matrix)
 		printf("\n");
 		i++;
 	}
-}
+}*/
 
 int	ft_count_nl(char *str)
 {
@@ -137,63 +137,20 @@ char	*ft_fd_to_str(int fd)
 	return (str);
 }
 
-/*void	ft_str_to_matrix(t_matrix *matrix, char *str, int nl, int col)
+int	ft_str_to_matrix_2(t_transfer *transfer, char **columns, int i, int j)
 {
-	char	**lines;
-	char	**columns;
-	int		*x;
-	int		*y;
-	int		*z;
-	int		*color;
-	int		i;
-	int		j;
-	int		k;
-
-	k = 0;
-	i = 0;
-	x = (int *)malloc(sizeof(int) * (nl * col));
-	y = (int *)malloc(sizeof(int) * (nl * col));
-	z = (int *)malloc(sizeof(int) * (nl * col));
-	color = (int *)malloc(sizeof(int) * (nl * col));
-	lines = ft_split(str, '\n');
-	while (lines[i])
-	{
-		columns = ft_split(lines[i], ' ');
-		j = 0;
-		while (columns[j])
-		{
-			
-			x[k] = j;
-			y[k] = i;
-			z[k] = ft_atoi(columns[j]);
-			if (ft_strchr(columns[j], 'x'))
-				color[k] = ft_get_color(columns[j]);
-			else
-				color[k] = 16777215;
-			j++;
-			k++;
-		}
-		i++;
-	}
-	matrix->x = x;
-	matrix->y = y;
-	matrix->z = z;
-	matrix->color = color;
-	ft_print_array(matrix->y, nl * col);
-}*/
-
-int	ft_str_to_matrix_2(int	****matrix, char **columns, int i, int j)
-{
-	matrix[0][i][j] = (int *)ft_calloc(2, sizeof(int));
-	matrix[0][i][j][0] = ft_atoi(columns[j]);
+	transfer->matrix[i][j] = (int *)ft_calloc(2, sizeof(int));
+	(transfer->matrix)[i][j][0] = ft_atoi(columns[j]);
 	if (ft_strchr(columns[j], 'x'))
-		matrix[0][i][j][1] = ft_get_color(columns[j]);
+		(transfer->matrix)[i][j][1] = ft_get_color(columns[j]);
 	else
-		matrix[0][i][j][1] = 16777215;
+		(transfer->matrix)[i][j][1] = 16777215;
+	if ((transfer->matrix)[i][j][0] > transfer->k)
+		transfer->k = (transfer->matrix)[i][j][0];
 	return (1);
 }
 
-int	ft_str_to_matrix_1(int ****matrix, char *str, int col)
+int	ft_str_to_matrix_1(t_transfer *transfer, char *str, int col)
 {
 	char	**lines;
 	char	**columns;
@@ -205,38 +162,32 @@ int	ft_str_to_matrix_1(int ****matrix, char *str, int col)
 	while (lines[i])
 	{
 		columns = ft_split(lines[i], ' ');
-		matrix[0][i] = (int **)ft_calloc(col * 2, sizeof(int *));
-		//matrix[0][col] = NULL;
+		(transfer->matrix)[i] = (int **)ft_calloc(col * 2, sizeof(int *));
 		j = 0;
 		while (columns[j])
 		{
-			if (!ft_str_to_matrix_2(&matrix[0], columns, i, j))
+			if (!ft_str_to_matrix_2(transfer, columns, i, j))
 				return (0);
 			j++;
 		}
 		i++;
 	}
-
-	//printf("j: %p", matrix[i-1][j]);
 	return (1);
 }
 
-int	***ft_read_data(int fd)
+void	ft_read_data(int fd, t_transfer *transfer)
 {
 	char	*str;
 	int		nl;
 	int		col;
-	int		***matrix;
 
 	str = ft_fd_to_str(fd);
 	/*if (ft_error(str))
 		return (0);*/
 	nl = ft_count_nl(str);
 	col = ft_count_col(str);
-	//ft_str_to_matrix(&matrix, str, nl, col);
-	matrix = (int ***)ft_calloc(nl * col, sizeof(int **));
-	ft_str_to_matrix_1(&matrix, str, col);
-	//ft_print_matrix(&matrix);
-	//ft_print_array(matrix.y, nl * col);
-	return (matrix);
+	transfer->i = col / 2;
+	transfer->j = nl /2;
+	transfer->matrix = (int ***)ft_calloc(nl * col, sizeof(int **));
+	ft_str_to_matrix_1(transfer, str, col);
 }
