@@ -6,7 +6,7 @@
 #    By: pweinsto <pweinsto@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/25 09:46:37 by pweinsto          #+#    #+#              #
-#    Updated: 2021/08/25 11:19:18 by pweinsto         ###   ########.fr        #
+#    Updated: 2021/09/15 15:50:07 by pweinsto         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,11 @@ SRCS_PATH = ./srcs/
 GET_NEXT_LINE_PATH = ./includes/get_next_line/
 
 SRCS =	$(SRCS_PATH)fdf.c \
+		$(SRCS_PATH)plot_object.c \
 		$(SRCS_PATH)read_data.c \
+		$(SRCS_PATH)read_data_utils.c \
+		$(SRCS_PATH)free.c \
+		$(SRCS_PATH)error.c \
 
 GET_NEXT_LINE_SRCS =	$(GET_NEXT_LINE_PATH)get_next_line.c \
 						$(GET_NEXT_LINE_PATH)get_next_line_utils.c \
