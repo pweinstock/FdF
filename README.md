@@ -22,8 +22,16 @@ Each number represents a point in space:
 * The vertical position corresponds to its ordinate.
 * The value corresponds to its altitude.
 
+## Allowed functions
+```
+open, close, read, write, malloc, free, perror, strerror, exit
+```
+All functions of the math library 
+
 ## Approach
-https://en.wikipedia.org/wiki/Rotation_matrix
+To calculate the new position of each point in a three-dimensional space after the user's key input, I use a rotation matrix.\
+https://en.wikipedia.org/wiki/Rotation_matrix \
+To connect the single points and create a grid, I use the Bresenham algorithm.\
 https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 
 ## How to use
